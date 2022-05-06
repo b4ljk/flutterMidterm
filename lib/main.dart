@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'wallet.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +13,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/': (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+        '/wallet': (context) => const wallet(),
+      },
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/',
     );
   }
 }
@@ -32,17 +39,44 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _initialIndex = 0;
   int _counter = 0;
+  int _selectedIndex = 0;
   var title1 = ['Upwork', 'Transfer', 'Paypal'];
-  var title2 = ['Electricity', 'House Rent', 'Spotify'];
+  var title2 = ['Electricity', 'Doctor bill', 'Spotify'];
   var sub1 = ['today', 'Yesterday', 'Jan 30, 2022'];
   var sub2 = ['Feb 28, 2022', 'Mar 28, 2022', 'Mar 31, 2022'];
+  var price1 = [1200, -200, 3000];
+  // var icon2 = ElevatedButton(onPressed: null, child: Text("pay"));
+
+  var price = [];
   var sub = [];
   var Title = [];
+  var icon1 = [
+    const FaIcon(FontAwesomeIcons.umbrella, color: Colors.purple, size: 28),
+    const FaIcon(FontAwesomeIcons.transgender, color: Colors.teal, size: 28),
+    const FaIcon(FontAwesomeIcons.paypal, color: Colors.blue, size: 28)
+  ];
+  var icon2 = [
+    const FaIcon(FontAwesomeIcons.bolt,
+        color: Color.fromARGB(255, 209, 209, 5), size: 28),
+    const FaIcon(FontAwesomeIcons.userDoctor, color: Colors.teal, size: 28),
+    const FaIcon(FontAwesomeIcons.spotify, color: Colors.green, size: 28)
+  ];
+
+  var myicon = [];
+
   @override
   void initState() {
     Title = title1;
     sub = sub1;
+    myicon = icon1;
+    price = price1;
     super.initState();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -88,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               width: double.infinity,
-              height: 631,
+              height: 561,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -124,21 +158,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         )),
                     const IconButton(
                         onPressed: null,
-                        icon: Icon(
-                          Icons.qr_code,
-                          color: Colors.teal,
-                          size: 30,
-                        )),
+                        icon: FaIcon(FontAwesomeIcons.qrcode,
+                            color: Colors.teal, size: 28)),
                     const IconButton(
                         onPressed: null,
-                        icon: Icon(
-                          Icons.send,
-                          color: Colors.teal,
-                          size: 30,
-                        )),
+                        icon: FaIcon(FontAwesomeIcons.paperPlane,
+                            color: Colors.teal, size: 25)),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 FlutterToggleTab(
@@ -147,30 +175,33 @@ class _MyHomePageState extends State<MyHomePage> {
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   borderRadius: 30,
                   selectedBackgroundColors: [Colors.white70],
-                  selectedTextStyle: TextStyle(
+                  selectedTextStyle: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
-                  unSelectedTextStyle: TextStyle(
+                  unSelectedTextStyle: const TextStyle(
                       color: Colors.grey,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
-                  labels: ["Transaction", "Upcoming bills"],
+                  labels: const ["Transaction", "Upcoming bills"],
                   selectedIndex: _initialIndex,
                   selectedLabelIndex: (index) {
                     setState(() {
                       if (index == 0) {
                         Title = title1;
                         sub = sub1;
+                        myicon = icon1;
+                        price = price1;
                       } else {
                         Title = title2;
                         sub = sub2;
+                        myicon = icon2;
                       }
                       _initialIndex = index;
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
@@ -184,36 +215,81 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              child: const Icon(Icons.ac_unit_rounded),
+                            Row(
+                              children: [
+                                Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            new BorderRadius.circular(10.0),
+                                        color: const Color.fromARGB(
+                                            31, 167, 162, 162)),
+                                    child: Center(child: myicon[index])),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.20,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(Title[index].toString(),
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold)),
+                                      const Text(
+                                        "Today",
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 12),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.20,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(Title[index].toString(),
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
-                                  Text(
-                                    "Today",
+                            _initialIndex == 0
+                                ? Text(
+                                    "${price[index]} \$",
                                     style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: price[index] < 0
+                                            ? Colors.red
+                                            : Colors.green),
                                   )
-                                ],
-                              ),
-                            ),
-                            const Text(
-                              "+ \$ 8500.00",
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
-                            )
+                                : ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                const Color.fromARGB(
+                                                    255, 212, 228, 209)),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ))),
+                                    onPressed: null,
+                                    child: InkWell(
+                                      onTap: () => {
+                                        Navigator.pushNamed(context, '/wallet')
+                                      },
+                                      child: const SizedBox(
+                                          width: 40,
+                                          child: Center(
+                                              child: Text(
+                                            "Pay",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 31, 117, 34),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ))),
+                                    ),
+                                  )
                           ],
                         ),
                       );
@@ -224,6 +300,30 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.home, size: 36),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.barsProgress, size: 36),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.wallet, size: 36),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.user, size: 36),
+            label: '',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.black12,
+        onTap: _onItemTapped,
       ),
     );
   }
