@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'wallet.dart';
+import 'globals.dart' as globals;
 
 void main() {
   runApp(const MyApp());
@@ -76,6 +77,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      print(index);
+      if (index == 0) {
+        Navigator.pushNamed(context, '/');
+      }
+      if (index == 3) {
+        Navigator.pushNamed(context, '/wallet');
+      }
     });
   }
 
