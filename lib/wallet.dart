@@ -15,6 +15,7 @@ class wallet extends StatefulWidget {
 class _walletState extends State<wallet> {
   int _selectedIndex = 0;
   int _initialIndex = 0;
+  bool visibility = true;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -91,7 +92,7 @@ class _walletState extends State<wallet> {
               ),
               Container(
                 width: double.infinity,
-                height: 593,
+                height: MediaQuery.of(context).size.height * 0.64,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -99,153 +100,241 @@ class _walletState extends State<wallet> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: Column(children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FlutterToggleTab(
-                    width: MediaQuery.of(context).size.width * 0.23,
-                    marginSelected:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    borderRadius: 30,
-                    selectedBackgroundColors: [Colors.white70],
-                    selectedTextStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
-                    unSelectedTextStyle: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400),
-                    labels: const ["Cards", "Accounts"],
-                    selectedIndex: _initialIndex,
-                    selectedLabelIndex: (index) {
-                      setState(() {
-                        //   if (index == 0) {
-                        //     Title = title1;
-                        //     sub = sub1;
-                        //     myicon = icon1;
-                        //     price = price1;
-                        //   } else {
-                        //     Title = title2;
-                        //     sub = sub2;
-                        //     myicon = icon2;
-                        //   }
-                        _initialIndex = index;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CreditCard(
-                      cardNumber: cardNumber,
-                      cardExpiry: expiryDate,
-                      cardHolderName: cardHolderName,
-                      cvv: cvv,
-                      bankName: "Golomt Bank",
-                      cardType: CardType
-                          .masterCard, // Optional if you want to override Card Type
-                      showBackSide: showBack,
-                      frontBackground: CardBackgrounds.black,
-                      backBackground: CardBackgrounds.white,
-                      showShadow: true,
-                      textExpDate: 'Exp. Date',
-                      textName: 'Card Holder Name',
-                      textExpiry: 'MM/YY'),
-                  ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: TextFormField(
-                          controller: cardNumberCtrl,
-                          decoration: InputDecoration(hintText: 'Card Number'),
-                          maxLength: 16,
-                          onChanged: (value) {
-                            final newCardNumber = value.trim();
-                            var newStr = '';
-                            final step = 4;
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    FlutterToggleTab(
+                      width: MediaQuery.of(context).size.width * 0.23,
+                      marginSelected: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 5),
+                      borderRadius: 30,
+                      selectedBackgroundColors: [Colors.white70],
+                      selectedTextStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      unSelectedTextStyle: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      labels: const ["Cards", "Accounts"],
+                      selectedIndex: _initialIndex,
+                      selectedLabelIndex: (index) {
+                        setState(() {
+                          _initialIndex = index;
+                          if (_initialIndex == 0) {
+                            visibility = true;
+                          } else {
+                            visibility = false;
+                          }
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Visibility(
+                      visible: visibility,
+                      child: Column(
+                        children: [
+                          CreditCard(
+                              cardNumber: cardNumber,
+                              cardExpiry: expiryDate,
+                              cardHolderName: cardHolderName,
+                              cvv: cvv,
+                              bankName: "Golomt Bank",
+                              cardType: CardType
+                                  .masterCard, // Optional if you want to override Card Type
+                              showBackSide: showBack,
+                              frontBackground: CardBackgrounds.black,
+                              backBackground: CardBackgrounds.white,
+                              showShadow: true,
+                              textExpDate: 'Exp. Date',
+                              textName: 'Card Holder Name',
+                              textExpiry: 'MM/YY'),
+                          Container(
+                            height: 500,
+                            child: ListView(
+                              // shrinkWrap: true,
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  child: TextFormField(
+                                    controller: cardNumberCtrl,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Card Number'),
+                                    maxLength: 16,
+                                    onChanged: (value) {
+                                      final newCardNumber = value.trim();
+                                      var newStr = '';
+                                      final step = 4;
 
-                            for (var i = 0;
-                                i < newCardNumber.length;
-                                i += step) {
-                              newStr += newCardNumber.substring(
-                                  i, math.min(i + step, newCardNumber.length));
-                              if (i + step < newCardNumber.length)
-                                newStr += ' ';
-                            }
+                                      for (var i = 0;
+                                          i < newCardNumber.length;
+                                          i += step) {
+                                        newStr += newCardNumber.substring(
+                                            i,
+                                            math.min(i + step,
+                                                newCardNumber.length));
+                                        if (i + step < newCardNumber.length)
+                                          newStr += ' ';
+                                      }
 
-                            setState(() {
-                              cardNumber = newStr;
-                            });
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: TextFormField(
-                          controller: expiryFieldCtrl,
-                          decoration: InputDecoration(hintText: 'Card Expiry'),
-                          maxLength: 5,
-                          onChanged: (value) {
-                            var newDateValue = value.trim();
-                            final isPressingBackspace =
-                                expiryDate.length > newDateValue.length;
-                            final containsSlash = newDateValue.contains('/');
+                                      setState(() {
+                                        cardNumber = newStr;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  child: TextFormField(
+                                    controller: expiryFieldCtrl,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Card Expiry'),
+                                    maxLength: 5,
+                                    onChanged: (value) {
+                                      var newDateValue = value.trim();
+                                      final isPressingBackspace =
+                                          expiryDate.length >
+                                              newDateValue.length;
+                                      final containsSlash =
+                                          newDateValue.contains('/');
 
-                            if (newDateValue.length >= 2 &&
-                                !containsSlash &&
-                                !isPressingBackspace) {
-                              newDateValue = newDateValue.substring(0, 2) +
-                                  '/' +
-                                  newDateValue.substring(2);
-                            }
-                            setState(() {
-                              expiryFieldCtrl.text = newDateValue;
-                              expiryFieldCtrl.selection =
-                                  TextSelection.fromPosition(TextPosition(
-                                      offset: newDateValue.length));
-                              expiryDate = newDateValue;
-                            });
-                          },
-                        ),
+                                      if (newDateValue.length >= 2 &&
+                                          !containsSlash &&
+                                          !isPressingBackspace) {
+                                        newDateValue =
+                                            newDateValue.substring(0, 2) +
+                                                '/' +
+                                                newDateValue.substring(2);
+                                      }
+                                      setState(() {
+                                        expiryFieldCtrl.text = newDateValue;
+                                        expiryFieldCtrl.selection =
+                                            TextSelection.fromPosition(
+                                                TextPosition(
+                                                    offset:
+                                                        newDateValue.length));
+                                        expiryDate = newDateValue;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                        hintText: 'Card Holder Name'),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        cardHolderName = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 25),
+                                  child: TextFormField(
+                                    decoration:
+                                        const InputDecoration(hintText: 'CVV'),
+                                    maxLength: 3,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        cvv = value;
+                                      });
+                                    },
+                                    focusNode: _focusNode,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 125,
+                                  ),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                const Color.fromARGB(
+                                                    255, 212, 228, 209)),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ))),
+                                    onPressed: () => {},
+                                    child: const InkWell(
+                                      onTap: null,
+                                      child: SizedBox(
+                                          width: 40,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                            "Pay",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 31, 117, 34),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ))),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 300,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: TextFormField(
-                          decoration:
-                              InputDecoration(hintText: 'Card Holder Name'),
-                          onChanged: (value) {
-                            setState(() {
-                              cardHolderName = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-                        child: TextFormField(
-                          decoration: InputDecoration(hintText: 'CVV'),
-                          maxLength: 3,
-                          onChanged: (value) {
-                            setState(() {
-                              cvv = value;
-                            });
-                          },
-                          focusNode: _focusNode,
-                        ),
-                      ),
-                    ],
-                  )
-                ]),
+                      //Bank info page
+                      replacement: Column(children: [
+                        Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 228, 232, 227),
+                                borderRadius: BorderRadius.circular(12)),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    child: Center(
+                                      child: const FaIcon(FontAwesomeIcons.bank,
+                                          color: Colors.teal, size: 28),
+                                    ),
+                                    decoration: new BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ))
+                      ]),
+                    ),
+                  ]),
+                ),
               )
             ],
           ),

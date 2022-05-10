@@ -4,40 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'wallet.dart';
 import 'globals.dart' as globals;
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class THISISHOME extends StatefulWidget {
+  const THISISHOME({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
-        '/wallet': (context) => const wallet(),
-      },
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      initialRoute: '/',
-    );
-  }
+  State<THISISHOME> createState() => _THISISHOMEState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _THISISHOMEState extends State<THISISHOME> {
   int _initialIndex = 0;
   int _counter = 0;
   int _selectedIndex = 0;
@@ -126,11 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const SizedBox(
-              height: 70,
+              height: 100,
             ),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.64,
+              height: 561,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -280,12 +254,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                         ))),
-                                    onPressed: () => {
-                                      Navigator.pushNamed(context, '/wallet')
-                                    },
-                                    child: const InkWell(
-                                      onTap: null,
-                                      child: SizedBox(
+                                    onPressed: null,
+                                    child: InkWell(
+                                      onTap: () => {
+                                        Navigator.pushNamed(context, '/wallet')
+                                      },
+                                      child: const SizedBox(
                                           width: 40,
                                           child: Center(
                                               child: Text(
@@ -334,5 +308,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
     );
+    ;
   }
 }

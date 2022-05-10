@@ -2,4 +2,4 @@
 library my_prj.globals;
 
 bool isLoggedIn = false;
-int _initialIndex = 0;
+int initialIndex = 0;
