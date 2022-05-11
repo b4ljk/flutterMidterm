@@ -15,6 +15,7 @@ class wallet extends StatefulWidget {
 class _walletState extends State<wallet> {
   int _selectedIndex = 0;
   int _initialIndex = 0;
+  int _depositIndex = 0;
   bool visibility = true;
   void _onItemTapped(int index) {
     setState(() {
@@ -291,7 +292,7 @@ class _walletState extends State<wallet> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 300,
                                 )
                               ],
@@ -301,36 +302,321 @@ class _walletState extends State<wallet> {
                       ),
                       //Bank info page
                       replacement: Column(children: [
-                        Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 228, 232, 227),
-                                borderRadius: BorderRadius.circular(12)),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                        InkWell(
+                          onTap: () => {
+                            setState(() {
+                              _depositIndex = 0;
+                              print(_depositIndex);
+                            })
+                          },
+                          child: Container(
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  color: _depositIndex == 0
+                                      ? Color.fromARGB(255, 237, 240, 236)
+                                      : Color.fromARGB(179, 245, 243, 243),
+                                  borderRadius: BorderRadius.circular(20)),
+                              margin: const EdgeInsets.symmetric(
                                 horizontal: 20,
-                                vertical: 20,
                               ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 60,
-                                    width: 60,
-                                    child: Center(
-                                      child: const FaIcon(FontAwesomeIcons.bank,
-                                          color: Colors.teal, size: 28),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 20,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      child: Center(
+                                        child: FaIcon(FontAwesomeIcons.bank,
+                                            color: _depositIndex == 0
+                                                ? Colors.teal
+                                                : Colors.blueGrey,
+                                            size: 28),
+                                      ),
+                                      decoration: new BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
                                     ),
-                                    decoration: new BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.04,
                                     ),
-                                  )
-                                ],
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Bank Link",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: _depositIndex == 0
+                                                ? Colors.teal
+                                                : Colors.blueGrey,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'Connect your bank',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: _depositIndex == 0
+                                                  ? Colors.teal
+                                                  : Colors.blueGrey,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          'account to depsit & fund',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: _depositIndex == 0
+                                                  ? Colors.teal
+                                                  : Colors.blueGrey,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.14,
+                                    ),
+                                    _depositIndex == 0
+                                        ? Container(
+                                            height: 30,
+                                            width: 30,
+                                            child: const Center(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.check,
+                                                size: 17,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            decoration: new BoxDecoration(
+                                              color: Colors.teal,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                          onTap: () => {
+                            setState(() {
+                              _depositIndex = 1;
+                              print(_depositIndex);
+                            })
+                          },
+                          child: Container(
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  color: _depositIndex == 1
+                                      ? Color.fromARGB(255, 237, 240, 236)
+                                      : Color.fromARGB(179, 245, 243, 243),
+                                  borderRadius: BorderRadius.circular(20)),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 20,
                               ),
-                            ))
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 20,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      child: Center(
+                                        child: FaIcon(FontAwesomeIcons.bank,
+                                            color: _depositIndex == 1
+                                                ? Colors.teal
+                                                : Colors.blueGrey,
+                                            size: 28),
+                                      ),
+                                      decoration: new BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.04,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Bank Link",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: _depositIndex == 1
+                                                ? Colors.teal
+                                                : Colors.blueGrey,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'Connect your bank',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: _depositIndex == 1
+                                                  ? Colors.teal
+                                                  : Colors.blueGrey,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          'account to depsit & fund',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: _depositIndex == 1
+                                                  ? Colors.teal
+                                                  : Colors.blueGrey,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.14,
+                                    ),
+                                    _depositIndex == 1
+                                        ? Container(
+                                            height: 30,
+                                            width: 30,
+                                            child: const Center(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.check,
+                                                size: 17,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            decoration: new BoxDecoration(
+                                              color: Colors.teal,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                          onTap: () => {
+                            setState(() {
+                              _depositIndex = 2;
+                              print(_depositIndex);
+                            })
+                          },
+                          child: Container(
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  color: _depositIndex == 2
+                                      ? Color.fromARGB(255, 237, 240, 236)
+                                      : Color.fromARGB(179, 245, 243, 243),
+                                  borderRadius: BorderRadius.circular(20)),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 20,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      child: Center(
+                                        child: FaIcon(FontAwesomeIcons.bank,
+                                            color: _depositIndex == 2
+                                                ? Colors.teal
+                                                : Colors.blueGrey,
+                                            size: 28),
+                                      ),
+                                      decoration: new BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.04,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Bank Link",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: _depositIndex == 2
+                                                ? Colors.teal
+                                                : Colors.blueGrey,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Text(
+                                          'Connect your bank',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: _depositIndex == 2
+                                                  ? Colors.teal
+                                                  : Colors.blueGrey,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          'account to depsit & fund',
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: _depositIndex == 2
+                                                  ? Colors.teal
+                                                  : Colors.blueGrey,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.14,
+                                    ),
+                                    _depositIndex == 2
+                                        ? Container(
+                                            height: 30,
+                                            width: 30,
+                                            child: const Center(
+                                              child: FaIcon(
+                                                FontAwesomeIcons.check,
+                                                size: 17,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            decoration: new BoxDecoration(
+                                              color: Colors.teal,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                ),
+                              )),
+                        ),
                       ]),
                     ),
                   ]),
