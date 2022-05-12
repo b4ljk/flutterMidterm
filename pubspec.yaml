@@ -36,6 +36,7 @@ dependencies:
   flutter_toggle_tab: ^1.1.7
   font_awesome_flutter: ^10.1.0
   awesome_card: ^1.1.7
+  firebase_core: ^1.16.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1064418391353",
+    "project_id": "incomey-7b728",
+    "storage_bucket": "incomey-7b728.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064418391353:android:475eacc30b58b1ede7a4e8",
+        "android_client_info": {
+          "package_name": "com.example.incomey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064418391353-t4eac4lipbl3fm85o2mdnk3ha9pgur82.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_-0IFpXlRebIWz80ngu3smtSXG4NURd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064418391353-t4eac4lipbl3fm85o2mdnk3ha9pgur82.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1064418391353-idpmeeob2sh9upns1c3il5vvafmgraea.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.incomey"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
