@@ -141,7 +141,7 @@ class _walletState extends State<wallet> {
               ),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.64,
+                height: MediaQuery.of(context).size.height * 0.70,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -399,6 +399,7 @@ class _walletState extends State<wallet> {
                           onTap: () => {
                             setState(() {
                               _depositIndex = 0;
+                              Navigator.pushNamed(context, '/jsontest');
                               print(_depositIndex);
                             })
                           },

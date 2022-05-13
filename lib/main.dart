@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'wallet.dart';
+import 'jsontest.dart';
 import 'globals.dart' as globals;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
         '/wallet': (context) => const wallet(),
+        '/jsontest': (context) => const JsonTest(),
       },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -141,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.64,
+              height: MediaQuery.of(context).size.height * 0.70,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -224,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 20,
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.37,
                   child: ListView.builder(
                     itemCount: Title.length,
                     itemBuilder: ((context, index) {
