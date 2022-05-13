@@ -1,9 +1,11 @@
 //wallet screen
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'dart:math' as math;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class wallet extends StatefulWidget {
   const wallet({Key? key}) : super(key: key);
@@ -13,6 +15,9 @@ class wallet extends StatefulWidget {
 }
 
 class _walletState extends State<wallet> {
+  final db = FirebaseFirestore.instance;
+  CollectionReference groceries =
+      FirebaseFirestore.instance.collection('payment');
   int _selectedIndex = 0;
   int _initialIndex = 0;
   int _depositIndex = 0;
@@ -23,6 +28,7 @@ class _walletState extends State<wallet> {
     });
   }
 
+  late FToast fToast;
   String cardNumber = '';
   String cardHolderName = '';
   String expiryDate = '';
@@ -36,6 +42,8 @@ class _walletState extends State<wallet> {
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
     _focusNode = FocusNode();
     _focusNode.addListener(() {
       setState(() {
@@ -50,6 +58,46 @@ class _walletState extends State<wallet> {
     super.dispose();
   }
 
+  _showToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("Payment Successful"),
+        ],
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 2),
+    );
+
+    // Custom Toast Position
+    fToast.showToast(
+        child: toast,
+        toastDuration: Duration(seconds: 2),
+        positionedToastBuilder: (context, child) {
+          return Positioned(
+            child: child,
+            top: 16.0,
+            left: 16.0,
+          );
+        });
+  }
+
+  TextEditingController UsrCntrl = TextEditingController();
+  TextEditingController cvvCntrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,6 +282,7 @@ class _walletState extends State<wallet> {
                                     horizontal: 20,
                                   ),
                                   child: TextFormField(
+                                    controller: UsrCntrl,
                                     decoration: const InputDecoration(
                                         hintText: 'Card Holder Name'),
                                     onChanged: (value) {
@@ -247,6 +296,7 @@ class _walletState extends State<wallet> {
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 25),
                                   child: TextFormField(
+                                    controller: cvvCntrl,
                                     decoration:
                                         const InputDecoration(hintText: 'CVV'),
                                     maxLength: 3,
@@ -265,17 +315,53 @@ class _walletState extends State<wallet> {
                                   child: ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all(
-                                                const Color.fromARGB(
-                                                    255, 212, 228, 209)),
+                                            (cardHolderName.isNotEmpty &&
+                                                    expiryDate.isNotEmpty &&
+                                                    cardNumber.isNotEmpty &&
+                                                    cvv.isNotEmpty)
+                                                ? (MaterialStateProperty.all(
+                                                    const Color.fromARGB(
+                                                        255, 212, 228, 209)))
+                                                : (MaterialStateProperty.all(
+                                                    Color.fromARGB(
+                                                        255, 142, 142, 142))),
                                         shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                         ))),
-                                    onPressed: () => {},
-                                    child: const InkWell(
+                                    onPressed: (cardHolderName.isNotEmpty &&
+                                            expiryDate.isNotEmpty &&
+                                            cardNumber.isNotEmpty &&
+                                            cvv.isNotEmpty)
+                                        ? (() => {
+                                              db.collection("users").add(
+                                                {
+                                                  "cardNumber": cardNumber,
+                                                  "expiryDate": expiryDate,
+                                                  "cardHolderName":
+                                                      cardHolderName,
+                                                  "cvv": cvv,
+                                                },
+                                              ).then((DocumentReference doc) =>
+                                                  print(
+                                                      'DocumentSnapshot added with ID: ${doc.id}')),
+                                              setState(() {
+                                                cvvCntrl.clear();
+                                                UsrCntrl.clear();
+                                                cardNumberCtrl.clear();
+                                                expiryFieldCtrl.clear();
+                                                cvv = "";
+                                                cardHolderName = "";
+                                                expiryDate = "";
+                                                cardNumber = "";
+
+                                                _showToast();
+                                              })
+                                            })
+                                        : null,
+                                    child: InkWell(
                                       onTap: null,
                                       child: SizedBox(
                                           width: 40,
@@ -284,8 +370,15 @@ class _walletState extends State<wallet> {
                                               child: Text(
                                             "Pay",
                                             style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 31, 117, 34),
+                                                color: (cardHolderName
+                                                            .isNotEmpty &&
+                                                        expiryDate.isNotEmpty &&
+                                                        cardNumber.isNotEmpty &&
+                                                        cvv.isNotEmpty)
+                                                    ? (Color.fromARGB(
+                                                        255, 31, 117, 34))
+                                                    : Color.fromARGB(
+                                                        255, 255, 255, 255),
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
                                           ))),
@@ -436,7 +529,8 @@ class _walletState extends State<wallet> {
                                       height: 60,
                                       width: 60,
                                       child: Center(
-                                        child: FaIcon(FontAwesomeIcons.bank,
+                                        child: FaIcon(
+                                            FontAwesomeIcons.dollarSign,
                                             color: _depositIndex == 1
                                                 ? Colors.teal
                                                 : Colors.blueGrey,
@@ -456,7 +550,7 @@ class _walletState extends State<wallet> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Bank Link",
+                                          "Microdeposits",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
@@ -467,7 +561,7 @@ class _walletState extends State<wallet> {
                                         ),
                                         SizedBox(height: 10),
                                         Text(
-                                          'Connect your bank',
+                                          'Connect bank in 7 days',
                                           style: TextStyle(
                                               fontSize: 13,
                                               color: _depositIndex == 1
@@ -542,7 +636,7 @@ class _walletState extends State<wallet> {
                                       height: 60,
                                       width: 60,
                                       child: Center(
-                                        child: FaIcon(FontAwesomeIcons.bank,
+                                        child: FaIcon(FontAwesomeIcons.paypal,
                                             color: _depositIndex == 2
                                                 ? Colors.teal
                                                 : Colors.blueGrey,
@@ -562,7 +656,7 @@ class _walletState extends State<wallet> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Bank Link",
+                                          "Paypal",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
@@ -573,7 +667,7 @@ class _walletState extends State<wallet> {
                                         ),
                                         SizedBox(height: 10),
                                         Text(
-                                          'Connect your bank',
+                                          'Connect your paypal account',
                                           style: TextStyle(
                                               fontSize: 13,
                                               color: _depositIndex == 2
@@ -581,20 +675,11 @@ class _walletState extends State<wallet> {
                                                   : Colors.blueGrey,
                                               fontWeight: FontWeight.w500),
                                         ),
-                                        Text(
-                                          'account to depsit & fund',
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              color: _depositIndex == 2
-                                                  ? Colors.teal
-                                                  : Colors.blueGrey,
-                                              fontWeight: FontWeight.w500),
-                                        )
                                       ],
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.14,
+                                          0.07,
                                     ),
                                     _depositIndex == 2
                                         ? Container(
