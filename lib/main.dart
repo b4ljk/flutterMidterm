@@ -7,6 +7,7 @@ import 'jsontest.dart';
 import 'globals.dart' as globals;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -170,13 +171,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    const IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.teal,
-                          size: 40,
-                        )),
+                    Container(
+                      child: Center(
+                        child: const IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              Icons.add,
+                              color: Colors.teal,
+                              size: 40,
+                            )),
+                      ),
+                    ),
                     const IconButton(
                         onPressed: null,
                         icon: FaIcon(FontAwesomeIcons.qrcode,
