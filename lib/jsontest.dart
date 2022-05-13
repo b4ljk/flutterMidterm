@@ -9,6 +9,8 @@ import 'package:awesome_card/awesome_card.dart';
 import 'dart:math' as math;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'person.dart';
+import 'person_network_service.dart';
 
 class JsonTest extends StatefulWidget {
   const JsonTest({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class JsonTest extends StatefulWidget {
 }
 
 class _JsonTestState extends State<JsonTest> {
+  final PersonNetworkService personService = PersonNetworkService();
   late Future<Album> futureAlbum;
   Future<Album> _Apicaller() async {
     final response = await http
@@ -102,11 +105,89 @@ class _JsonTestState extends State<JsonTest> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  child: Column(children: [
-                    ///////////////
-                  ]),
+                child: Container(
+                  height: 200,
+                  child: SingleChildScrollView(
+                    child: SafeArea(
+                      child: FutureBuilder(
+                        future: personService.fetchPersons(100),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Person>> snapshot) {
+                          if (snapshot.hasData) {
+                            return Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Card(
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount: snapshot.data!.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                var currentPerson =
+                                                    snapshot.data![index];
+
+                                                return ListTile(
+                                                  title:
+                                                      Text(currentPerson.name),
+                                                  leading: Container(
+                                                    width: 70,
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                      color: Color.fromARGB(
+                                                          255, 185, 211, 208),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: const Center(
+                                                      child: FaIcon(
+                                                          FontAwesomeIcons.user,
+                                                          color: Colors.teal,
+                                                          size: 28),
+                                                    ),
+                                                  ),
+                                                  subtitle: Text(
+                                                      "Phone: ${currentPerson.phoneNumber}"),
+                                                );
+                                              }),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+
+                          if (snapshot.hasError) {
+                            return const Center(
+                                child: Icon(
+                              Icons.error,
+                              color: Colors.red,
+                              size: 82.0,
+                            ));
+                          }
+
+                          return Center(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const CircularProgressIndicator(),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              const Text(
+                                  "Loading at the moment, please hold the line.")
+                            ],
+                          ));
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               )
             ],
