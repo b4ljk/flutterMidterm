@@ -8,6 +8,7 @@ import 'globals.dart' as globals;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
     myicon = icon1;
     price = price1;
     super.initState();
+    initialization();
   }
 
   void _onItemTapped(int index) {
@@ -353,4 +355,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+void initialization() async {
+  FlutterNativeSplash.remove();
 }

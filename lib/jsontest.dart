@@ -105,87 +105,81 @@ class _JsonTestState extends State<JsonTest> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: Container(
-                  height: 200,
-                  child: SingleChildScrollView(
-                    child: SafeArea(
-                      child: FutureBuilder(
-                        future: personService.fetchPersons(100),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<Person>> snapshot) {
-                          if (snapshot.hasData) {
-                            return Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        Card(
-                                          child: ListView.builder(
-                                              shrinkWrap: true,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemCount: snapshot.data!.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                var currentPerson =
-                                                    snapshot.data![index];
+                child: SingleChildScrollView(
+                  child: SafeArea(
+                    child: FutureBuilder(
+                      future: personService.fetchPersons(100),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Person>> snapshot) {
+                        if (snapshot.hasData) {
+                          return Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Card(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount: snapshot.data!.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              var currentPerson =
+                                                  snapshot.data![index];
 
-                                                return ListTile(
-                                                  title:
-                                                      Text(currentPerson.name),
-                                                  leading: Container(
-                                                    width: 70,
-                                                    decoration:
-                                                        new BoxDecoration(
-                                                      color: Color.fromARGB(
-                                                          255, 185, 211, 208),
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: const Center(
-                                                      child: FaIcon(
-                                                          FontAwesomeIcons.user,
-                                                          color: Colors.teal,
-                                                          size: 28),
-                                                    ),
+                                              return ListTile(
+                                                title: Text(currentPerson.name),
+                                                leading: Container(
+                                                  width: 70,
+                                                  decoration: new BoxDecoration(
+                                                    color: Color.fromARGB(
+                                                        255, 185, 211, 208),
+                                                    shape: BoxShape.circle,
                                                   ),
-                                                  subtitle: Text(
-                                                      "Phone: ${currentPerson.phoneNumber}"),
-                                                );
-                                              }),
-                                        ),
-                                      ],
-                                    ),
+                                                  child: const Center(
+                                                    child: FaIcon(
+                                                        FontAwesomeIcons.user,
+                                                        color: Colors.teal,
+                                                        size: 28),
+                                                  ),
+                                                ),
+                                                subtitle: Text(
+                                                    "Phone: ${currentPerson.phoneNumber}"),
+                                              );
+                                            }),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            );
-                          }
-
-                          if (snapshot.hasError) {
-                            return const Center(
-                                child: Icon(
-                              Icons.error,
-                              color: Colors.red,
-                              size: 82.0,
-                            ));
-                          }
-
-                          return Center(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const CircularProgressIndicator(),
-                              const SizedBox(
-                                height: 20.0,
                               ),
-                              const Text(
-                                  "Loading at the moment, please hold the line.")
                             ],
+                          );
+                        }
+
+                        if (snapshot.hasError) {
+                          return const Center(
+                              child: Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 82.0,
                           ));
-                        },
-                      ),
+                        }
+
+                        return Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const CircularProgressIndicator(),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            const Text(
+                                "Loading at the moment, please hold the line.")
+                          ],
+                        ));
+                      },
                     ),
                   ),
                 ),
