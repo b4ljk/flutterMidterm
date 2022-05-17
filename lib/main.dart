@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:incomey/profile.dart';
 import 'wallet.dart';
 import 'jsontest.dart';
 import 'globals.dart' as globals;
@@ -9,13 +12,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  const GOOGLE_CLIENT_ID =
+      "1064418391353-t4eac4lipbl3fm85o2mdnk3ha9pgur82.apps.googleusercontent.com";
+  FlutterFireUIAuth.configureProviders([
+    const EmailProviderConfiguration(),
+    const PhoneProviderConfiguration(),
+    const GoogleProviderConfiguration(clientId: GOOGLE_CLIENT_ID),
+    const AppleProviderConfiguration(),
+  ]);
   print("firebae successfuully initiated");
   runApp(const MyApp());
 }
@@ -25,18 +36,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = FirebaseAuth.instance;
     return MaterialApp(
       routes: {
         '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
         '/wallet': (context) => const wallet(),
         '/jsontest': (context) => const JsonTest(),
+        '/login': (context) => const LoginScreen(),
+        '/profile': (context) => const myProfileScreen(),
       },
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(
+              const EdgeInsets.all(24),
+            ),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          ),
+        ),
+        primarySwatch: Colors.teal,
       ),
-      initialRoute: '/',
+      initialRoute: auth.currentUser == null ? '/login' : '/',
     );
   }
 }
@@ -91,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
+    Navigator.pushNamed(context, '/profile');
     setState(() {
       _selectedIndex = index;
       print(index);
