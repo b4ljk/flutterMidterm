@@ -13,6 +13,7 @@ import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'login.dart';
+import 'sda.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -202,17 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    Container(
-                      child: Center(
-                        child: const IconButton(
-                            onPressed: null,
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.teal,
-                              size: 40,
-                            )),
-                      ),
-                    ),
+                    CustomIcon(),
                     const IconButton(
                         onPressed: null,
                         icon: FaIcon(FontAwesomeIcons.qrcode,
@@ -381,6 +372,27 @@ class _MyHomePageState extends State<MyHomePage> {
         selectedItemColor: Colors.teal,
         unselectedItemColor: Colors.black12,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class CustomIcon extends StatelessWidget {
+  const CustomIcon({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: const IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.add,
+              color: Colors.teal,
+              size: 40,
+            )),
       ),
     );
   }

@@ -209,6 +209,9 @@ class _walletState extends State<wallet> {
                             child: ListView(
                               // shrinkWrap: true,
                               children: <Widget>[
+                                SizedBox(
+                                  height: 30,
+                                ),
                                 Container(
                                   margin: const EdgeInsets.symmetric(
                                     horizontal: 20,
@@ -735,5 +738,31 @@ class _walletState extends State<wallet> {
           unselectedItemColor: Colors.black12,
           onTap: _onItemTapped,
         ));
+  }
+}
+
+// create avatar
+class myavatar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.15,
+      width: MediaQuery.of(context).size.width * 0.15,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.teal,
+          width: 2,
+        ),
+      ),
+      child: Center(
+        child: FaIcon(
+          FontAwesomeIcons.user,
+          color: Colors.teal,
+          size: 30,
+        ),
+      ),
+    );
   }
 }
